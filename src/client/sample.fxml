@@ -16,6 +16,7 @@
         <TextField fx:id="loginField" promptText="login" HBox.hgrow="ALWAYS"/>
         <PasswordField fx:id="passwordField" promptText="password" HBox.hgrow="ALWAYS"
                        onAction="#tryToAuth"/>
+
         <Button text="auth" onAction="#tryToAuth" minWidth="50"/>
         <Button text="reg" onAction="#registration" minWidth="50"/>
     </HBox>
@@ -23,7 +24,7 @@
     <HBox VBox.vgrow="ALWAYS">
         <TextArea fx:id="textArea" HBox.hgrow="ALWAYS" editable="false" wrapText="true"/>
         <ListView fx:id="clientList" visible="false" managed="false" minWidth="50"
-        onMouseClicked="#clickClientList"
+                  onMouseClicked="#clickClientList"
         />
     </HBox>
 

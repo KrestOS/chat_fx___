@@ -4,6 +4,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 
 public class ClientHandler {
     private Server server;
@@ -23,7 +25,7 @@ public class ClientHandler {
 
             new Thread(() -> {
                 try {
-//                    socket.setSoTimeout(5000);
+                    socket.setSoTimeout(120000);
                     //цикл аутентификации
                     while (true) {
                         String str = in.readUTF();
@@ -91,13 +93,19 @@ public class ClientHandler {
                         }
                     }
 
-                    //SocketTimeoutException
+
+                } catch (SocketException e) {
+
+                } catch (SocketTimeoutException e) {
+                    System.out.println("time Of");
                 } catch (IOException e) {
                     e.printStackTrace();
                 } finally {
-                    System.out.println("Клиент отключился");
-                    server.unsubscribe(this);
+                    System.out.println("Клиент " + nickname + " отключился");
                     try {
+
+                        out.writeUTF("Клиент " + nickname + " отключился");
+                        server.unsubscribe(this);
                         socket.close();
                     } catch (IOException e) {
                         e.printStackTrace();

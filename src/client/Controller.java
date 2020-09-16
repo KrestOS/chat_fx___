@@ -20,8 +20,10 @@ import javafx.stage.WindowEvent;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -91,6 +93,7 @@ public class Controller implements Initializable {
                             e.printStackTrace();
                         }
                     }
+
                 }
             });
         });
@@ -145,16 +148,31 @@ public class Controller implements Initializable {
                                 }
                             } else {
                                 textArea.appendText(str + "\n");
+
                             }
                         }
+                    }catch (EOFException e) {
+
+                        System.out.println("socket closed");
+
+
+
+
                     } catch (IOException e) {
                         e.printStackTrace();
+                        try {
+                            socket.close();
+                        } catch (IOException ioException) {
+                            ioException.printStackTrace();
+                        }
                     } finally {
                         System.out.println("Мы отключились от сервера");
                         setAuthenticated(false);
+
                         try {
                             socket.close();
-                        } catch (IOException e) {
+                        }
+                        catch (IOException e) {
                             e.printStackTrace();
                         }
                     }

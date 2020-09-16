@@ -3,6 +3,7 @@ package server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -72,6 +73,11 @@ public class Server {
 
     public void subscribe(ClientHandler clientHandler) {
         clients.add(clientHandler);
+        try {
+            socket.setSoTimeout(0);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
         broadcastClientList();
     }
 
